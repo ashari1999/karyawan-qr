@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Data Karyawan</title>
+  <style>
+    body { font-family: Arial; padding: 20px; background: #f2f2f2; }
+    .card { background: #fff; padding: 20px; border-radius: 10px; max-width: 400px; margin: auto; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+    img { width: 150px; border-radius: 10px; }
+  </style>
+</head>
+<body>
+  <div class="card" id="data">Memuat data...</div>
+
+  <script>
+    const id = new URLSearchParams(window.location.search).get('id');
+
+    fetch("https://sheetdb.io/api/v1/ohyeb202p0p6n/search?ID%20Karyawan=" + id)
+      .then(res => res.json())
+      .then(data => {
+        if(data.length > 0){
+          const d = data[0];
+          document.getElementById("data").innerHTML = `
+            <img src="${d['Link Foto']}" alt="Foto Karyawan" /><br><br>
+            <strong>Nama:</strong> ${d['Nama Lengkap']}<br>
+            <strong>Jabatan:</strong> ${d['Jabatan']}<br>
+            <strong>Divisi:</strong> ${d['Divisi']}<br>
+            <strong>No HP:</strong> ${d['No HP']}<br>
+          `;
+        } else {
+          document.getElementById("data").innerText = "Data karyawan tidak ditemukan.";
+        }
+      })
+      .catch(() => {
+        document.getElementById("data").innerText = "Gagal mengambil data.";
+      });
+  </script>
+</body>
+</html>
